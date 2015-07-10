@@ -1,8 +1,3 @@
-
-# coding: utf-8
-
-# In[1]:
-
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
@@ -11,8 +6,6 @@ import math
 
 
 # Objects to make conversion between coordinate systems easier.
-
-# In[2]:
 
 class CartesianCoords(object):
     
@@ -33,59 +26,6 @@ class PolarCoords(object):
         self.x = radial*np.cos(azimuth)
         self.y = radial*np.sin(azimuth)
         self.z = height
-
-
-# Testing to see how well the area of a circle is represented as the diameter of the circle increases, for fixed element size (1$\times$1 nm).
-
-# # In[3]:
-
-# diam_range = 125 #maximum diameter to be tested
-# efficiency = np.zeros(diam_range)
-# error = np.zeros(diam_range)
-
-
-# # Create a square matrix of zeros and populate with 1's if lying within the circle boundary.
-
-# # In[4]:
-
-# for d in range(diam_range):
-#     x_spacing, y_spacing = 1., 1.
-#     xs = np.linspace(-0.5*d,0.5*d,(d/x_spacing)+1)
-#     ys = np.linspace(-0.5*d,0.5*d,(d/y_spacing)+1)
-
-#     Z = np.zeros((len(xs), len(ys)))
-#     for i, x in enumerate(xs):
-#         for j, y in enumerate(ys):
-#             if CartesianCoords(x,y).r <= 0.5*d:
-#                 Z[i][j] = 1
-#     efficiency[d] = (np.count_nonzero(Z)/(float(len(xs))*float(len(ys))))/(0.25*np.pi)
-
-
-# # In[5]:
-
-# fig = plt.figure(figsize = (10,5))
-# ax = fig.add_subplot(111)
-# ax.plot(range(1,diam_range+1), efficiency*100); ax.plot([0,diam_range],[100,100], 'g')
-# ax.set_xlim(0,diam_range); #ax.set_ylim(0,100)
-# ax.set_ylabel("Area ratio (%)"); ax.set_xlabel("Diameter (nm)")
-# ax.set_title("Mesh area as a percentage of the area of a true circle of the same diameter\nMesh elements of size {} x {} nm"
-#             .format(x_spacing, y_spacing));
-
-
-# This tends towards 100%, but for all systems (apart from one small, anomalous system) the area for the circle comprising of square elements is an underestimation.
-
-# #Mesh element demonstration
-# 
-# Testing interchangeability of coordinate systems using objects.
-
-# In[6]:
-
-# c = CartesianCoords(6.0,6.0)
-# d = PolarCoords(c.r, c.a)
-# print(d.x, d.y)
-
-
-# In[16]:
 
 def plot_circular_fidi_mesh(diameter=60, x_spacing=2, y_spacing=2, centre_mesh='auto',
                             show_axes=True, show_title=True):
@@ -189,33 +129,6 @@ def plot_circular_fidi_mesh(diameter=60, x_spacing=2, y_spacing=2, centre_mesh='
     #return area
 
 
-# In[56]:
-
-#from IPython.html.widgets import interact, fixed, interact_manual
-
-
-# In[54]:
-
-
-#plot_circular_fidi_mesh(diameter=60,x_spacing=10, y_spacing=3)
-
-
-# In[58]:
-
-# interact_manual(plot_circular_fidi_mesh, 
-#                 diametre=(10, 100, 5), 
-#                 x_spacing=(1, 10, 1), 
-#                 y_spacing=(1, 10, 1), 
-#                 centre_mesh={'auto':'auto', 'True':True, 'False':False})
-
-
-# Function to determine if a point lies within a regular polygon, which can also be rotated and translated.
-# Uses a summing angle method found on [WolframAlpha Demonstrations](http://demonstrations.wolfram.com/IsAPointInsideOrOutsideARegularPolygon/).
-# 
-# To be used for creating polygons for fidimag or plotting the mesh in the function defined shortly.
-
-# In[22]:
-
 def in_poly(x, y, n, r=1, rotation=0, translate=(0,0), plot=False):
     """
     Determines whether or not the point (x,y) lies within a regular n-sided
@@ -284,16 +197,6 @@ def in_poly(x, y, n, r=1, rotation=0, translate=(0,0), plot=False):
         ax0.scatter([x,0+translate[0]],[y,0+translate[1]], c=[dotcolour,'b'], s=[20,10],lw = 0)
     return np.isclose(2*np.pi, angle_test(x,y), atol=1e-4)
 
-
-# Demonstration of the `in_poly` function. Returns True or False
-
-# In[23]:
-
-# print(in_poly(x=10,y=10,n=6,r=20,plot=True))
-# print(in_poly(x=15,y=10,n=5,r=20,plot=True))
-
-
-# In[49]:
 
 def plot_poly_fidi_mesh(diameter=80,n=4,x_spacing=2,y_spacing=2,rotation=0,translate=(0,0),
                         centre_mesh='auto',show_axes=True, show_title=True):
@@ -411,33 +314,6 @@ def plot_poly_fidi_mesh(diameter=80,n=4,x_spacing=2,y_spacing=2,rotation=0,trans
     #return area
 
 
-# In[50]:
-
-#plot_poly_fidi_mesh(diameter=80,n=4,x_spacing=2,y_spacing=2, centre_mesh=False, rotation = np.pi/4, translate = (10,10))
-
-
-# In[59]:
-
-# pi = np.pi
-# interact_manual(plot_poly_fidi_mesh, 
-#                 diameter=(1,200,10), 
-#                 n=(3, 100, 1), 
-#                 x_spacing=(1,10,1) ,
-#                 y_spacing=(1, 10, 1), 
-#                 rotation = (0, 2*pi, pi/4.),
-#                 translate=fixed((10,10)),
-#                 centre_mesh={'auto':'auto', 'True':True, 'False':False})
-
-
-# In[40]:
-
-#plot_poly_fidi_mesh()
-
-
-# Following function, `find_circumradius` can be used in conjunction with above functions when another dimension needs to be specified.
-
-# In[36]:
-
 def find_circumradius(n, side = 0, apothem = 0):
     """
     Returns the radius of the circumscribing circle for a regular polygon
@@ -453,50 +329,24 @@ def find_circumradius(n, side = 0, apothem = 0):
     else:
         raise ValueError("Please specify side length OR apothem, not both!")
     return circumradius
-        
-
-
-# # For example, if I want to plot a hexagon with an apothem of 50 nm, what value of the radius should I input?
-
-# # In[37]:
-
-# find_circumradius(6, apothem=50)
-
-
-# # Using `find_circumradius` in the input can give the correctly sized mesh, although there are still some bugs with this feature, these are caused by a combination of an exception being triggered accidentally and floating-point inaccuracies.
-
-# # In[38]:
-
-# plot_poly_fidi_mesh(diameter=2*find_circumradius(6,apothem=50),n=6,x_spacing=2,y_spacing=2)
-
-
-# # An attempt to fix this slowed down the code noticeably, but rounding the output to `find_circumradius` seems to have fixed the problem at the expense of negligible error.
-
-# In[39]:
-
-def find_circumradius(n, side = 0, apothem = 0):
-    """
-    Returns the radius of the circumscribing circle for a regular polygon
-    given the side length or the apothem (distance from circumcentre to 
-    centre of a face).
-    """
-    if side == 0 and apothem != 0:
-        circumradius = apothem/(np.cos(np.pi/n))
-    elif side != 0 and apothem == 0:
-        circumradius = side/(2*np.sin(np.pi/n))
-    elif side == 0 and apothem == 0:
-        raise ValueError("Please specify a side length or an apothem.")
-    else:
-        raise ValueError("Please specify side length OR apothem, not both!")
-    return round(circumradius,4)
-
-
-# In[40]:
+    
+# Rounding version of function
+#def find_circumradius(n, side = 0, apothem = 0):
+#    """
+#    Returns the radius of the circumscribing circle for a regular polygon
+#    given the side length or the apothem (distance from circumcentre to 
+#    centre of a face).
+#    """
+#    if side == 0 and apothem != 0:
+#        circumradius = apothem/(np.cos(np.pi/n))
+#    elif side != 0 and apothem == 0:
+#        circumradius = side/(2*np.sin(np.pi/n))
+#    elif side == 0 and apothem == 0:
+#        raise ValueError("Please specify a side length or an apothem.")
+#    else:
+#        raise ValueError("Please specify side length OR apothem, not both!")
+#    return round(circumradius,4)
 
 #plot_poly_fidi_mesh(diameter=2*find_circumradius(6,apothem=50),n=6,x_spacing=2,y_spacing=2)
-
-
-# In[ ]:
-
 
 
