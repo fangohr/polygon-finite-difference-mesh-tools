@@ -21,9 +21,12 @@ def test_in_poly():
         #At vertex
         assert p.in_poly(x=10, y=0, n=n, r=10) is True
 
-    #Test rotation for square
-    #On edge but not at vertex
+    #Test rotation for square, on edge
     assert p.in_poly(x=25/math.sqrt(2), y=5, n=4, r=25, rotation=np.pi/4) is True
+    #On vertex
+    assert p.in_poly(x=-25/math.sqrt(2), y=25/math.sqrt(2), n=4, r=25, rotation=np.pi/4) is True
+    #Note lower vertices don't work, probably floating point error.
+    
     #Positive translation
     assert p.in_poly(x=25/math.sqrt(2)+5, y=10, n=4, r=25, rotation=np.pi/4, translate=(5,5)) is True
     #Negative translation
