@@ -31,5 +31,17 @@ def test_in_poly():
     assert p.in_poly(x=25/math.sqrt(2)+5, y=10, n=4, r=25, rotation=np.pi/4, translate=(5,5)) is True
     #Negative translation
     assert p.in_poly(x=25/math.sqrt(2)-5, y=0, n=4, r=25, rotation=np.pi/4, translate=(-5,-5)) is True
+    
+def test_find_circumradius():
+    #Square of given side length
+    s = p.find_circumradius(n=4, side=10)
+    assert abs(s-0.5*10*math.sqrt(2)) < 1e-15
+    #Square of given apothem
+    a = p.find_circumradius(n=4, apothem=5)
+    assert abs(a-0.5*10*math.sqrt(2)) < 1e-15
+    #Circle approximation (apothem = radius for a circle)
+    r = p.find_circumradius(n=10000, apothem=25)
+    assert abs(25-r) < 1e-5
+    
 
 
