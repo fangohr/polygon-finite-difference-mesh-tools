@@ -27,8 +27,11 @@ class PolarCoords(object):
         self.y = radial*np.sin(azimuth)
         self.z = height
 
-def plot_circular_fidi_mesh(diameter=60, x_spacing=2, y_spacing=2, centre_mesh='auto',
-                            show_axes=True, show_title=True):
+
+
+
+def plot_circular_fidi_mesh(diameter, x_spacing=2, y_spacing=2,
+centre_mesh='auto', show_axes=True, show_title=True):
     """
     Plots a representation of a circular mesh of specified diameter 
     comprised of rectangular elements of size x_spacing x y_spacing nm.
@@ -126,6 +129,9 @@ def plot_circular_fidi_mesh(diameter=60, x_spacing=2, y_spacing=2, centre_mesh='
     if show_title == True:
         ax0.set_title("Finite difference mesh demonstration\n        Diameter = {} nm\n{} elements of size {}x{} nm"
                       .format(diameter, elem_count, x_spacing, y_spacing))
+    #return area
+
+
 
 
 def in_poly(x, y, n, r=1, rotation=0, translate=(0,0), plot=False):
@@ -168,6 +174,11 @@ def in_poly(x, y, n, r=1, rotation=0, translate=(0,0), plot=False):
             length12 = math.sqrt((coord1[0]-coord2[0])**2 + (coord1[1]-coord2[1])**2)
             length13 = math.sqrt((coord1[0]-coord3[0])**2 + (coord1[1]-coord3[1])**2)
             length23 = math.sqrt((coord2[0]-coord3[0])**2 + (coord2[1]-coord3[1])**2)
+            #if np.isclose([coord2[0], coord3[0]], coord1[0]).any():
+            #    continue
+            #elif np.isclose([coord2[1], coord3[1]], coord1[1]).any():
+            #    continue
+            #else:
             try:
                 angle += np.arccos((length12**2 + length13**2 - length23**2)/(2*length12*length13))
             except (FloatingPointError,ZeroDivisionError): #for points on the boundary
@@ -192,7 +203,9 @@ def in_poly(x, y, n, r=1, rotation=0, translate=(0,0), plot=False):
     return np.isclose(2*np.pi, angle_test(x,y), atol=1e-4)
 
 
-def plot_poly_fidi_mesh(diameter=80,n=4,x_spacing=2,y_spacing=2,rotation=0,translate=(0,0),
+
+
+def plot_poly_fidi_mesh(diameter,n,x_spacing=2,y_spacing=2,rotation=0,translate=(0,0),
                         centre_mesh='auto',show_axes=True, show_title=True):
     """
     Plots a representation of an n-sided polygon mesh with a containing circle
@@ -241,6 +254,8 @@ def plot_poly_fidi_mesh(diameter=80,n=4,x_spacing=2,y_spacing=2,rotation=0,trans
         ax0.set_frame_on(False)    
     
     #decide if centering will prevent asymmetry
+    #maybe incorporate independent centering for x and y
+    #(tried this and it was extremely difficult...)
     if centre_mesh == 'auto':
         if diameter%(2*x_spacing) == 0 and diameter%(2*y_spacing) == 0:
             centre_mesh = False
@@ -303,6 +318,8 @@ def plot_poly_fidi_mesh(diameter=80,n=4,x_spacing=2,y_spacing=2,rotation=0,trans
     if show_title == True:
         ax0.set_title("Finite difference mesh demonstration\nDiameter = {:.2f} nm\n{} elements of size {}x{} nm"
                       .format(diameter, elem_count, x_spacing, y_spacing))
+
+
 
 
 def find_circumradius(n, side = 0, apothem = 0):
