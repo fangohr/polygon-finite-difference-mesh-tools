@@ -140,7 +140,7 @@ def in_poly(x, y, n, r=1, rotation=0, translate=(0,0), plot=False):
     polygon whose circumscribing circle has radius r.
     
     By default, a point will lie at the Cartesian location (r, 0) but can
-    be rotated (anti-clockwise) by specifying a rotation (in radians).
+    be rotated by specifying a rotation (in radians).
     
     Polygon centred at (0,0) by default, but this can be changed by giving
     translate as an (x,y) tuple.
@@ -170,22 +170,25 @@ def in_poly(x, y, n, r=1, rotation=0, translate=(0,0), plot=False):
                 coord3 = coords[i+1]
             except IndexError:
                 coord3 = coords[0]
+                
             #cosine rule to determine angle
             length12 = math.sqrt((coord1[0]-coord2[0])**2 + (coord1[1]-coord2[1])**2)
             length13 = math.sqrt((coord1[0]-coord3[0])**2 + (coord1[1]-coord3[1])**2)
             length23 = math.sqrt((coord2[0]-coord3[0])**2 + (coord2[1]-coord3[1])**2)
-            #if np.isclose([coord2[0], coord3[0]], coord1[0]).any():
-            #    continue
-            #elif np.isclose([coord2[1], coord3[1]], coord1[1]).any():
-            #    continue
-            #else:
-            try:
-                angle += np.arccos((length12**2 + length13**2 - length23**2)/(2*length12*length13))
-            except (FloatingPointError,ZeroDivisionError): #for points on the boundary
+            if (np.isclose(length12,0)) or (np.isclose(length13,0)):
                 angle = 2*np.pi
-                #pass
                 break
+
+            try:
+                angle_increment = (length12**2 + length13**2 - length23**2)/(2*length12*length13)
+                angle += np.arccos(angle_increment)
+            except (FloatingPointError,ZeroDivisionError):
+                if np.isclose(angle_increment,-1): #inside, on the line
+                    return 2*np.pi #automatic pass
+                if np.isclose(angle_increment,1): #outside, 'on the line'
+                    return 0 #automatic fail
         return angle
+    
     if plot == True:
         coords = poly_coords(r,n,rotation,translate)
         fig = plt.figure()
