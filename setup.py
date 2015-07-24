@@ -4,7 +4,7 @@ from distutils.core import setup
 setup(
     name = "polygonmeshtools",
     packages=["polygonmeshtools"],
-    version = "0.2",
+    version = "0.3",
     description = "A package for creating polygon-shaped geometries from cuboidal finite difference elements",
     author = "Xander Marjoram",
     author_email = "am31g12@soton.ac.uk",
