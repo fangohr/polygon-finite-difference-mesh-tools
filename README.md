@@ -22,3 +22,9 @@ Inputs are:
 Some example plots are shown below:
 
     in_poly(x=10,y=10,n=3,r=20,plot=True)
+
+![inpoly1.png](https://bitbucket.org/repo/n5rKzp/images/3387981976-inpoly1.png)
+
+    in_poly(x=10,y=10,n=5,r=20,plot=True)
+
+![inpoly2.png](https://bitbucket.org/repo/n5rKzp/images/4244237353-inpoly2.png)
