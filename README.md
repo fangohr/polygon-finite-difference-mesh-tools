@@ -1,16 +1,24 @@
-Polygon Finite Difference Mesh Tools
----
+#Polygon Mesh Tools
 
 A package for creating polygon-shaped geometries from cuboidal finite difference elements.
 
 Also contains some visualisation functions which use matplotlib.
 
-Changelog
 ---
 
-        v0.2: (2015-07-21)
-        - Fixed bug which caused some points in line with two vertices to be
-          erroneously included in geometry.
-          
-        v0.3: (2015-07-24)
-        - Simplifying structure. Moving functions from tools.py to __init__.py.
+##in_poly
+
+Returns a boolean stating whether or not a given Cartesian coordinate lies within the boundaries of a regular polygon.
+
+Inputs are:
+
+- x- and y- coordinates for the point in question
+- n, the number of sides the polygon has
+- r, the [circumradius](https://en.wikipedia.org/wiki/Regular_polygon#Circumradius)
+- rotation, in radians (anti-clockwise)
+- translation, shifts the centre of the polygon to the given Cartesian co-ordinate tuple
+- plot, a boolean to dictate whether or not the plot should be shown.
+
+Some example plots are shown below:
+
+    in_poly(x=10,y=10,n=3,r=20,plot=True)
