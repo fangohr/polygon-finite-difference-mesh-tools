@@ -1,5 +1,5 @@
 test:
-	py.test -v polygonmeshtools/*
+	py.test -v polygonmeshtools
 
 pep8:
 	py.test -v -s polygonmeshtools/check_pep8.py
