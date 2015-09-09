@@ -1,72 +1,73 @@
+import matplotlib.pyplot as plt
+
 
 def plot_circular_fidi_mesh(diameter, x_spacing=2, y_spacing=2,
-centre_mesh='auto', show_axes=True, show_title=True):
+                            centre_mesh='auto', show_axes=True, show_title=True):
     """
-    Plots a representation of a circular mesh of specified diameter 
+    Plots a representation of a circular mesh of specified diameter
     comprised of rectangular elements of size x_spacing x y_spacing nm.
-    
-    
+
     Requires the following imports:
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    
+
     import numpy as np
     import matplotlib.pyplot as plt
     import matplotlib.patches as patches
-    
-    
+
+
     Miscellaneous info:
     ~~~~~~~~~~~~~~~~~~~
-    
+
     centre_mesh = True    This will set the middle of the mesh to lie at the centre of an element.
     centre_mesh = False     "    "   "   "     "    "  "    "   "  "   "  "  corner  "  "    "   .
     centre_mesh = 'auto'  The centering will be decided based on whichever will fit the geometry best.
-    
-    
+
     Known bugs:
     ~~~~~~~~~~~
-    
+
     When the diameter/x_spacing or y_spacing does not produce an integer, the mesh will not be centered correctly.
     It is recommended that centre_mesh be set to True in this case.
     """
-    
+
     #initial setup of figure
-    fig = plt.figure(figsize = (diameter**0.45,diameter**0.45))
+    fig = plt.figure(figsize=(diameter**0.45, diameter**0.45))
     ax0 = fig.add_subplot(111)
-    
+
     ax0.set_xlim(-0.5*diameter, 0.5*diameter)
     ax0.set_ylim(-0.5*diameter, 0.5*diameter)
-    
-    if show_axes == True:
-        ax0.set_xlabel("Radius (nm)"); ax0.set_ylabel("Radius (nm)")
+
+    if show_axes is True:
+        ax0.set_xlabel("Radius (nm)")
+        ax0.set_ylabel("Radius (nm)")
     else:
         ax0.get_yaxis().set_visible(False)
         ax0.get_xaxis().set_visible(False)
         ax0.set_frame_on(False)
-    
+
     #plotting reference circle
-    ax0.add_patch(plt.Circle((0,0), radius = 0.5*diameter, alpha = 0.25))
-    
+    ax0.add_patch(plt.Circle((0, 0), radius=0.5*diameter, alpha=0.25))
+
     #decide if centering will cause asymmetry
     if centre_mesh == 'auto':
-        if diameter%(2*x_spacing) == 0 and diameter%(2*y_spacing) == 0:
+        if diameter % (2*x_spacing) == 0 and diameter % (2*y_spacing) == 0:
             centre_mesh = False
         else:
             centre_mesh = True
-    
+
     area = 0
     unit_area = x_spacing*y_spacing
-    
-    if centre_mesh == True:
+
+    if centre_mesh is True:
         #produces lists of the form [0,2,-2,4,-4,6,-6,8,-8,10,-10]
         #(spacing = 2; diameter = 20, in this example)
         #trailing slice index is to remove leading zero which would cause duplicate patches
-        xlist = sorted(list(range(0, (diameter/2)+1, x_spacing)) 
-                       + list(range(0,-(diameter/2)-1,-x_spacing)), 
+        xlist = sorted(list(range(0, (diameter/2)+1, x_spacing))
+                       + list(range(0, -(diameter/2)-1, -x_spacing)),
                        key=abs)[1:]
-        ylist = sorted(list(range(0, (diameter/2)+1, y_spacing)) 
-                       + list(range(0,-(diameter/2)-1,-y_spacing)), 
+        ylist = sorted(list(range(0, (diameter/2)+1, y_spacing))
+                       + list(range(0, -(diameter/2)-1, -y_spacing)),
                        key=abs)[1:]
-    
+
         for y in ylist:
             for x in xlist:
                 box_coord = (x - 0.5*x_spacing, y - 0.5*y_spacing)
