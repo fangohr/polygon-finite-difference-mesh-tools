@@ -1,0 +1,9 @@
+- [ ] tidy up code to be pep8 compatible. Run 'make pep8' to check for this.
+
+- [ ] check coverage of code through tests. Run 'make coverage' to see the current state.
+
+- [ ] write more / better tests to increase coverage percentage
+
+- [ ] testing the plot.py content is hard. Can you move some of the calculation in there into a separate file, and test that? (It may not be nice or possible).
+
+- [ ] Create some usage examples; maybe in a notebook. They should start with 'import polygonmeshtools', and start as simple as possible.
