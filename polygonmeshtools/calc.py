@@ -37,45 +37,49 @@ def in_poly(x, y, n, r=1, rotation=0, translate=(0,0), plot=False):
         np.seterr(all='raise')
         
         coords = poly_coords(r,n,rotation,translate)
-        coord1 = [x,y]
+        coordA = [x,y]
         angle = 0
         for i in range(len(coords)):
             try:
-                coord2 = coords[i]
-                coord3 = coords[i+1]
+                coordB = coords[i]
+                coordC = coords[i+1]
             except IndexError:
-                coord3 = coords[0]
+                coordC = coords[0]
                 
-            #cosine rule to determine angle
-            length12 = math.sqrt((
-                coord1[0]-coord2[0])**2 + (coord1[1]-coord2[1])**2
+            #finding side lengths
+            lengthAB = math.sqrt((
+                coordA[0]-coordB[0])**2 + (coordA[1]-coordB[1])**2
                 )
                                  
-            length13 = math.sqrt((
-                coord1[0]-coord3[0])**2 + (coord1[1]-coord3[1])**2
+            lengthAC = math.sqrt((
+                coordA[0]-coordC[0])**2 + (coordA[1]-coordC[1])**2
                 )
                                  
-            length23 = math.sqrt((
-                coord2[0]-coord3[0])**2 + (coord2[1]-coord3[1])**2
+            lengthBC = math.sqrt((
+                coordB[0]-coordC[0])**2 + (coordB[1]-coordC[1])**2
                 )
-                                 
-            if (np.isclose(length12,0)) or (np.isclose(length13,0)):
+            
+            if (np.isclose(lengthAB,0)) or (np.isclose(lengthAC,0)):
                 angle = 2*np.pi
                 break
 
             try:
                 #cosine rule
-                angle_increment = (length12**2 + length13**2 - length23**2)
-                    / (2*length12*length13)
+                #NB: (side a is opposite side of triangle to point A)
+                a, b, c = lengthBC, lengthAC, lengthAB
+                angle_increment = (c**2 + b**2 - a**2) / (2*c*b)
                 angle += np.arccos(angle_increment)
+                
             except (FloatingPointError,ZeroDivisionError):
                 #inside, on the line
                 if np.isclose(angle_increment,-1):
-                    return 2*np.pi #automatic pass
+                    #automatic pass
+                    return 2*np.pi
                 
                 #outside, 'on the line'
                 if np.isclose(angle_increment,1):
-                    return 0 #automatic fail
+                    #automatic fail
+                    return 0
         return angle
     
     if plot == True:
