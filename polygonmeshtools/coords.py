@@ -7,9 +7,15 @@ class CartesianCoords(object):
         self.x = x
         self.y = y
         self.z = z
-        self.r = math.sqrt(x**2 + y**2 + z**2)  # radial
-        self.a = np.arctan2(x, y)    # azimuth
-        self.h = z                   # cylindrical height
+        
+        #radial
+        self.r = math.sqrt(x**2 + y**2 + z**2)
+        
+        #azimuth
+        self.a = np.arctan2(x, y)
+        
+        #cylindrical height
+        self.h = z
 
 
 class PolarCoords(object):
