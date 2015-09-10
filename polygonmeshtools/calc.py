@@ -6,14 +6,14 @@ from .coords import CartesianCoords, PolarCoords
 
 def in_poly(x, y, n, r=1, rotation=0, translate=(0,0), plot=False):
     """
-    Determines whether or not the point (x,y) lies within a regular n-sided
-    polygon whose circumscribing circle has radius r.
+    Determines whether or not the point (x,y) lies within a regular
+    n-sided polygon whose circumscribing circle has radius r.
     
-    By default, a point will lie at the Cartesian location (r, 0) but can
-    be rotated by specifying a rotation (in radians).
+    By default, a point will lie at the Cartesian location (r, 0) but 
+    can be rotated by specifying a rotation (in radians).
     
-    Polygon centred at (0,0) by default, but this can be changed by giving
-    translate as an (x,y) tuple.
+    Polygon centred at (0,0) by default, but this can be changed by
+    giving translate in the form (x,y).
     """
     
     def poly_coords(r, n, rotation=rotation, translate=translate):
