@@ -1,4 +1,8 @@
+import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.patches as patches
+from .coords import CartesianCoords, PolarCoords
+from .calc import in_poly, find_circumradius
 
 
 def plot_circular_fidi_mesh(
@@ -8,13 +12,6 @@ def plot_circular_fidi_mesh(
     """
     Plots a representation of a circular mesh of specified diameter
     comprised of rectangular elements of size x_spacing x y_spacing nm.
-
-    Requires the following imports:
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-    import numpy as np
-    import matplotlib.pyplot as plt
-    import matplotlib.patches as patches
 
 
     Miscellaneous info:
@@ -127,8 +124,8 @@ def plot_circular_fidi_mesh(
                     pass 
     else:
         raise ValueError(
-            "Unrecognised value for centre_mesh! \
-            Please choose True, False or 'auto'."
+            'Unrecognised value "{}" for centre_mesh! \
+            Please choose True, False or "auto".'.format(centre_mesh)
             )
     
     elem_count = area/(x_spacing*y_spacing)
@@ -153,14 +150,6 @@ def plot_poly_fidi_mesh(
     Plots a representation of an n-sided polygon mesh with a containing
     circle of specified diameter, comprised of rectangular elements of
     size x_spacing*y_spacing (in nanometres).
-    
-    
-    Requires the following imports:
-    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    
-    import numpy as np
-    import matplotlib.pyplot as plt
-    import matplotlib.patches as patches
     
     
     Miscellaneous info:
@@ -277,8 +266,8 @@ def plot_poly_fidi_mesh(
                     pass        
     else:
         raise ValueError(
-            "Unrecognised value \"{}\" for centre_mesh! \
-            Please choose True, False or \"auto\".".format(centre_mesh)
+            'Unrecognised value "{}" for centre_mesh! \
+            Please choose True, False or "auto".'.format(centre_mesh)
             )
     
     #plot reference polygon
