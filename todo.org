@@ -1,10 +1,10 @@
 - [ ] tidy up code to be pep8 compatible. Run 'make pep8' to check for this.
   - use spyder with pep8 check enabled to see this (http://www.southampton.ac.uk/~fangohr/blog/spyder-the-python-ide.html#warn-if-pep8-coding-guidelines-are-violated)
 
-- [ ] check coverage of code through tests. Run 'make coverage' to see the current state.
+- [X] check coverage of code through tests. Run 'make coverage' to see the current state.
 
-- [ ] write more / better tests to increase coverage percentage
+- [X] write more / better tests to increase coverage percentage
 
 - [ ] testing the plot.py content is hard. Can you move some of the calculation in there into a separate file, and test that? (It may not be nice or possible).
 
-- [ ] Create some usage examples; maybe in a notebook. They should start with 'import polygonmeshtools', and start as simple as possible.
+- [X] Create some usage examples; maybe in a notebook. They should start with 'import polygonmeshtools', and start as simple as possible.
