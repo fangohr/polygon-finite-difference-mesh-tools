@@ -2,12 +2,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
 from .coords import CartesianCoords, PolarCoords
-from .calc import in_poly, find_circumradius
+from .calc import in_poly
 
 
 def plot_circular_fidi_mesh(
-    diameter, x_spacing=2, y_spacing=2, centre_mesh='auto', 
-    show_axes=True, show_title=True 
+    diameter, x_spacing=2, y_spacing=2, centre_mesh='auto',
+    show_axes=True, show_title=True
     ):
     """
     Plots a representation of a circular mesh of specified diameter

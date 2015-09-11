@@ -1,6 +1,7 @@
 import math
 
 import numpy as np
+import pytest
 
 from .calc import in_poly, find_circumradius
 
@@ -36,4 +37,7 @@ def test_find_circumradius():
     #Circle approximation (apothem = radius for a circle)
     r = find_circumradius(n=10000, apothem=25)
     assert abs(25-r) < 1e-5
+
+    with pytest.raises(ValueError):
+        find_circumradius(n=5, apothem=0, side=0)
     

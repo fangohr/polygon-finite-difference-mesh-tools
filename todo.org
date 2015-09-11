@@ -1,4 +1,5 @@
 - [ ] tidy up code to be pep8 compatible. Run 'make pep8' to check for this.
+  - use spyder with pep8 check enabled to see this (http://www.southampton.ac.uk/~fangohr/blog/spyder-the-python-ide.html#warn-if-pep8-coding-guidelines-are-violated)
 
 - [ ] check coverage of code through tests. Run 'make coverage' to see the current state.
 
