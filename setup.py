@@ -8,7 +8,7 @@ except ImportError:
 setup(
     name = "polygonmeshtools",
     packages = ["polygonmeshtools"],
-    version = "0.41",
+    version = "0.42",
     description = "A package for creating polygon-shaped geometries \
         from cuboidal finite difference elements",
     author = "Xander Marjoram",
