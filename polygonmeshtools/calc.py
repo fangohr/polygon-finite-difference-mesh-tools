@@ -3,7 +3,7 @@ import math
 import numpy as np
 import matplotlib.pyplot as plt
 
-from .coords import CartesianCoords, PolarCoords
+from .coords import CartesianCoords, CylindricalCoords
 
 def in_poly(x, y, n, r=1, rotation=0, translate=(0,0), plot=False):
     """
@@ -20,7 +20,7 @@ def in_poly(x, y, n, r=1, rotation=0, translate=(0,0), plot=False):
     def poly_coords(r, n, rotation=rotation, translate=translate):
         coords = np.empty((n,2))
         for i in range(n):
-            coord = PolarCoords(r, (2.*np.pi*i/n)+rotation)
+            coord = CylindricalCoords(r, (2.*np.pi*i/n)+rotation)
             coords[i][0] = coord.x + translate[0]
             coords[i][1] = coord.y + translate[1]
         return coords

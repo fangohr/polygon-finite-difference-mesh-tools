@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as patches
-from .coords import CartesianCoords, PolarCoords
+from .coords import CartesianCoords, CylindricalCoords
 from .calc import in_poly
 
 
@@ -37,14 +37,14 @@ def plot_circular_fidi_mesh(
     It is recommended that centre_mesh be set to True in this case.
     """
 
-    #initial setup of figure
+    # Initial setup of figure
     fig = plt.figure(figsize = (diameter**0.45, diameter**0.45))
     ax0 = fig.add_subplot(111)
 
     ax0.set_xlim(-0.5*diameter, 0.5*diameter)
     ax0.set_ylim(-0.5*diameter, 0.5*diameter)
 
-    if show_axes is True:
+    if show_axes:
         ax0.set_xlabel("Radius (nm)")
         ax0.set_ylabel("Radius (nm)")
     else:
@@ -52,10 +52,10 @@ def plot_circular_fidi_mesh(
         ax0.get_xaxis().set_visible(False)
         ax0.set_frame_on(False)
 
-    #plotting reference circle
+    # Plotting reference circle
     ax0.add_patch(plt.Circle((0, 0), radius=0.5*diameter, alpha=0.25))
 
-    #decide if centering will cause asymmetry
+    # Decide if centering will cause asymmetry
     if centre_mesh == 'auto':
         if diameter % (2*x_spacing) == 0 and diameter % (2*y_spacing) == 0:
             centre_mesh = False
@@ -65,7 +65,7 @@ def plot_circular_fidi_mesh(
     area = 0
     unit_area = x_spacing*y_spacing
 
-    if centre_mesh is True:
+    if centre_mesh == True:
         #produce lists of the form [0,2,-2,4,-4,6,-6,8,-8,10,-10]
         # (spacing = 2; diameter = 20, in this^ example)
         
@@ -94,7 +94,7 @@ def plot_circular_fidi_mesh(
                         )
                     area += unit_area
                 else:
-                    #if circle boundary is exceeded once, there is no
+                    # If circle boundary is exceeded once, there is no
                     # point proceeding with this row, as all following
                     # coordinates will also lie outside the circle
                     
@@ -120,8 +120,6 @@ def plot_circular_fidi_mesh(
                         )
                         
                     area += unit_area
-                else:
-                    pass 
     else:
         raise ValueError(
             'Unrecognised value "{}" for centre_mesh! \
@@ -130,7 +128,7 @@ def plot_circular_fidi_mesh(
     
     elem_count = area/(x_spacing*y_spacing)
     
-    if show_title == True:
+    if show_title:
         ax0.set_title(
             "Finite difference mesh demonstration\n\
             Diameter = {} nm\n\
@@ -182,7 +180,7 @@ def plot_poly_fidi_mesh(
     ax0.set_xlim(-0.5*diameter+translate[0], 0.5*diameter+translate[0])
     ax0.set_ylim(-0.5*diameter+translate[1], 0.5*diameter+translate[1])
     
-    if show_axes == True:
+    if show_axes:
         ax0.set_xlabel("x (nm)"); ax0.set_ylabel("y (nm)")
     else:
         ax0.get_yaxis().set_visible(False)
@@ -233,9 +231,6 @@ def plot_poly_fidi_mesh(
                         )
                         
                     area += unit_area
-                    
-                else:
-                    pass
                 
     elif centre_mesh == False:
     #start from top left corner and work across and down
@@ -261,9 +256,7 @@ def plot_poly_fidi_mesh(
                         )
                     )
                     area += unit_area
-                    
-                else:
-                    pass        
+      
     else:
         raise ValueError(
             'Unrecognised value "{}" for centre_mesh! \
@@ -273,7 +266,7 @@ def plot_poly_fidi_mesh(
     #plot reference polygon
     coords = np.empty((n,2))
     for i in range(n):
-        coord = PolarCoords(diameter/2., (2.*np.pi*i/n)+rotation)
+        coord = CylindricalCoords(diameter/2., (2.*np.pi*i/n)+rotation)
         
         coords[i][0] = coord.x + translate[0]
         coords[i][1] = coord.y + translate[1]
