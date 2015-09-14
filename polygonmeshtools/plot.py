@@ -45,14 +45,6 @@ def plot_circular_fidi_mesh(
     ax0.set_xlim(-0.5*diameter, 0.5*diameter)
     ax0.set_ylim(-0.5*diameter, 0.5*diameter)
 
-    if show_axes:
-        ax0.set_xlabel("Radius (nm)")
-        ax0.set_ylabel("Radius (nm)")
-    else:
-        ax0.get_yaxis().set_visible(False)
-        ax0.get_xaxis().set_visible(False)
-        ax0.set_frame_on(False)
-
     # Plotting reference circle
     ax0.add_patch(plt.Circle((0, 0), radius=0.5*diameter, alpha=0.25))
 
@@ -67,28 +59,17 @@ def plot_circular_fidi_mesh(
     unit_area = x_spacing*y_spacing
 
     if centre_mesh == True:
-        #produce lists of the form [0,2,-2,4,-4,6,-6,8,-8,10,-10]
-        # (spacing = 2; diameter = 20, in this^ example)
-
-        #the idea is to start in the centre and then work outwards,
-        # alternating sides
-
-        #[1:] removes first zero which would cause duplicate patches
-        xlist = sorted(
-            list(range(0, (diameter/2)+1, x_spacing)) +
-            list(range(0, -(diameter/2)-1, -x_spacing)), key=abs
-        )[1:]
-
-        ylist = sorted(
-            list(range(0, (diameter/2)+1, y_spacing)) +
-            list(range(0, -(diameter/2)-1, -y_spacing)), key=abs
-        )[1:]
+        # Produce lists of the form [0,2,-2,4,-4,6,-6,8,-8,10,-10]
+        #+ (spacing = 2; diameter = 20, in this^ example)
+        # The idea is to start in the centre and then work outwards,
+        #+ alternating sides
+        xlist, ylist = centre_mesh_lists(diameter, x_spacing, y_spacing)
 
         for y in ylist:
             for x in xlist:
                 box_coord = (x - 0.5*x_spacing, y - 0.5*y_spacing)
                 if CartesianCoords(x, y).r <= 0.5*diameter:
-                    #plot rectangle
+                    # Plot rectangle
                     ax0.add_patch(
                         patches.Rectangle(
                             box_coord, x_spacing, y_spacing, alpha=0.25
@@ -100,7 +81,7 @@ def plot_circular_fidi_mesh(
                     # point proceeding with this row, as all following
                     # coordinates will also lie outside the circle
 
-                    #(recall: we are working outwards and circles
+                    # (Recall: we are working outwards and circles
                     # are symmetric)
                     break
 
@@ -114,13 +95,12 @@ def plot_circular_fidi_mesh(
                 centre_coord = (x + 0.5*x_spacing, y + 0.5*y_spacing)
                 if (CartesianCoords(centre_coord[0], centre_coord[1]).r <=
                         0.5*diameter):
-                    #plot element
+                    # Plot element
                     ax0.add_patch(
                         patches.Rectangle(
                             (x, y), x_spacing, y_spacing, alpha=0.25
                         )
                     )
-
                     area += unit_area
     else:
         raise ValueError(
@@ -130,14 +110,11 @@ def plot_circular_fidi_mesh(
 
     elem_count = area/(x_spacing*y_spacing)
 
-    if show_title:
-        ax0.set_title(
-            "Finite difference mesh demonstration\nDiameter = {} nm\n\
-            {} elements of size {}x{} nm".format(
-            diameter, elem_count, x_spacing, y_spacing
-        )
-        )
-    #return area
+    titles_and_axes(
+        show_title=show_title, show_axes=show_axes, axes=ax0,
+        diameter=diameter, x_spacing=x_spacing, y_spacing=y_spacing,
+        elem_count=elem_count
+    )
 
 
 def plot_poly_fidi_mesh(
@@ -180,16 +157,7 @@ def plot_poly_fidi_mesh(
     ax0.set_xlim(-0.5*diameter+translate[0], 0.5*diameter+translate[0])
     ax0.set_ylim(-0.5*diameter+translate[1], 0.5*diameter+translate[1])
 
-    if show_axes:
-        ax0.set_xlabel("x (nm)")
-        ax0.set_ylabel("y (nm)")
-    else:
-        ax0.get_yaxis().set_visible(False)
-        ax0.get_xaxis().set_visible(False)
-        ax0.set_frame_on(False)
-
     # Decide if centering will prevent asymmetry
-
     # In future, potentially decide x and y centring separately
     #+ (will add many lines of code and complexity, is it worth it?)
     if centre_mesh == 'auto':
@@ -204,19 +172,9 @@ def plot_poly_fidi_mesh(
     if centre_mesh == True:
         #produce lists of the form [0,2,-2,4,-4,6,-6,8,-8,10,-10]
         # (spacing = 2; diameter = 20, in this^ example)
-
-        #[1:] removes first zero which would cause duplicate patches
-        xlist = sorted(
-            list(range(0, int(diameter/2)+1, x_spacing)) +
-            list(range(0, -int(diameter/2)-1, -x_spacing)), key=abs
-        )[1:]
-        xlist = [x + translate[0] for x in xlist[:]]
-
-        ylist = sorted(
-            list(range(0, int(diameter/2)+1, y_spacing)) +
-            list(range(0, -int(diameter/2)-1, -y_spacing)), key=abs
-        )[1:]
-        ylist = [y + translate[1] for y in ylist[:]]
+        xlist, ylist = centre_mesh_lists(
+            diameter, x_spacing, y_spacing, translate
+        )
 
         for y in ylist:
             for x in xlist:
@@ -284,10 +242,52 @@ def plot_poly_fidi_mesh(
 
     elem_count = area/(x_spacing*y_spacing)
 
+    titles_and_axes(
+        show_title=show_title, show_axes=show_axes, axes=ax0,
+        diameter=diameter, x_spacing=x_spacing, y_spacing=y_spacing,
+        elem_count=elem_count
+    )
+
+
+def titles_and_axes(
+    show_title, show_axes, axes, diameter, x_spacing, y_spacing, elem_count
+):
+    """
+    Handles axes and titles for plot_poly_fidi_mesh and
+    plot_circular_fidi_mesh.
+    """
+    if show_axes:
+        axes.set_xlabel("x (nm)")
+        axes.set_ylabel("y (nm)")
+    else:
+        axes.get_yaxis().set_visible(False)
+        axes.get_xaxis().set_visible(False)
+        axes.set_frame_on(False)
+
     if show_title:
-        ax0.set_title(
+        axes.set_title(
             "Finite difference mesh demonstration\nDiameter = {:.2f} nm\n\
             {} elements of size {}x{} nm".format(
             diameter, elem_count, x_spacing, y_spacing
         )
         )
+
+
+def centre_mesh_lists(diameter, x_spacing, y_spacing, translate=(0, 0)):
+    """
+    Returns xlist and ylist
+    """
+    xlist = sorted(
+        list(range(0, int(diameter/2)+1, x_spacing)) +
+        list(range(0, -int(diameter/2)-1, -x_spacing)), key=abs
+    )[1:]
+
+    ylist = sorted(
+        list(range(0, int(diameter/2)+1, x_spacing)) +
+        list(range(0, -int(diameter/2)-1, -y_spacing)), key=abs
+    )[1:]
+
+    xlist = [x + translate[0] for x in xlist[:]]
+    ylist = [y + translate[1] for y in ylist[:]]
+
+    return xlist, ylist

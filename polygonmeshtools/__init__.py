@@ -9,4 +9,4 @@ from .coords import CartesianCoords, CylindricalCoords
 
 from .calc import in_poly, find_circumradius
 
-from .plot import plot_circular_fidi_mesh, plot_poly_fidi_mesh
+from .plot import *
