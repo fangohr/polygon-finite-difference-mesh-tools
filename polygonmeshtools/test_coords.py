@@ -31,9 +31,9 @@ def test_coordinate_transformation_many():
                 assert (c.x, c.y, c.z) == (x, y, z)
                 d = CylindricalCoords(c.r, c.a, c.h)
                 assert (d.r, d.a, d.h) == (c.r, c.a, c.h)
-                
+
                 # Offending statements are x and y
-                
+
                 assert np.isclose(d.x, x) is True
                 assert np.isclose(d.y, y) is True
                 assert np.isclose(d.z, z) is True

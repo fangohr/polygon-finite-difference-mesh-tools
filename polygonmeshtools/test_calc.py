@@ -7,7 +7,7 @@ from .calc import in_poly, find_circumradius
 
 
 def test_in_poly():
-    for n in range(3,11):
+    for n in range(3, 11):
         # Inside boundary
         assert in_poly(x=0, y=0, n=n, r=10) is True
         # Outside boundary
@@ -15,23 +15,38 @@ def test_in_poly():
         # At vertex
         assert in_poly(x=10, y=0, n=n, r=10) is True
     # Attempted exception triggering. Testing all corners of a square.
-    for x, y in zip([20, 0, -20, 0], [0,20,0,-20]):
+    for x, y in zip([20, 0, -20, 0], [0, 20, 0, -20]):
         assert in_poly(x=x, y=y, n=4, r=20) is True
 
     # Test rotation for square, on edge
     assert in_poly(x=25/math.sqrt(2), y=5, n=4, r=25, rotation=np.pi/4) is True
     # Upper vertices
-    assert in_poly(x=-25/math.sqrt(2), y=25/math.sqrt(2), n=4, r=25, rotation=np.pi/4) is True
-    assert in_poly(x=25/math.sqrt(2), y=25/math.sqrt(2), n=4, r=25, rotation=np.pi/4) is True
+    assert in_poly(
+        x=-25/math.sqrt(2), y=25/math.sqrt(2), n=4, r=25, rotation=np.pi/4
+    ) is True
+
+    assert in_poly(
+        x=25/math.sqrt(2), y=25/math.sqrt(2), n=4, r=25, rotation=np.pi/4
+    ) is True
 
     # Testing lower vertices
-    assert in_poly(x=-25/math.sqrt(2), y=-25/math.sqrt(2), n=4, r=25, rotation=np.pi/4) is True
-    assert in_poly(x=25/math.sqrt(2), y=-25/math.sqrt(2), n=4, r=25, rotation=np.pi/4) is True
-    
+    assert in_poly(
+        x=-25/math.sqrt(2), y=-25/math.sqrt(2), n=4, r=25, rotation=np.pi/4
+    ) is True
+
+    assert in_poly(
+        x=25/math.sqrt(2), y=-25/math.sqrt(2), n=4, r=25, rotation=np.pi/4
+    ) is True
+
     # Positive translation
-    assert in_poly(x=25/math.sqrt(2)+5, y=10, n=4, r=25, rotation=np.pi/4, translate=(5,5)) is True
+    assert in_poly(
+        x=25/math.sqrt(2)+5, y=10, n=4, r=25, translate=(5, 5)
+    ) is True
+
     # Negative translation
-    assert in_poly(x=25/math.sqrt(2)-5, y=0, n=4, r=25, rotation=np.pi/4, translate=(-5,-5)) is True
+    assert in_poly(
+        x=25/math.sqrt(2)-5, y=0, n=4, r=25, translate=(-5, -5)
+    ) is True
 
     # Need to try and trigger FloatingPointError or ZeroDivisionError
 

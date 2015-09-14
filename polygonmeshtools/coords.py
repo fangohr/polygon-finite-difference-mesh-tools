@@ -7,13 +7,13 @@ class CartesianCoords(object):
         self.x = x
         self.y = y
         self.z = z
-        
+
         #radial
         self.r = math.sqrt(x**2 + y**2)
-        
+
         #azimuth
         self.a = np.arctan2(y, x)
-        
+
         #cylindrical height
         self.h = z
 
