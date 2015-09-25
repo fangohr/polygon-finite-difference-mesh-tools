@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/fangohr/polygon-finite-difference-mesh-tools.svg?branch=master)](https://travis-ci.org/fangohr/polygon-finite-difference-mesh-tools)
+
 #Polygon Mesh Tools
 
 A package for creating polygon-shaped geometries from cuboidal finite difference elements.
