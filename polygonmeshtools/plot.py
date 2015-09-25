@@ -65,8 +65,8 @@ def titles_and_axes(
 
     if show_title:
         axes.set_title(
-            "Finite difference mesh demonstration\nDiameter = {:.2f} nm\n\
-            {} elements of size {}x{} nm".format(
+            "Finite difference mesh demonstration\nDiameter = {0:.2f} nm\n\
+            {1} elements of size {2}x{3} nm".format(
             diameter, elem_count, x_spacing, y_spacing
         )
         )
